@@ -1,0 +1,88 @@
+---
+title: "Adjusting linear model"
+author: "Ariel Selles"
+date: "June 13th, 2017"
+output: 
+  slidy_presentation: 
+    css: slidy.css
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Introducing the app
+
+The app *Adjusting linear model* helps to compare two linear models on mtcars:
+
+1. mpg ~ wt
+2. mpg ~ wt + qsec
+
+The comparison is made by ploting both models on a plane, after chosing a value for qsec. 
+
+## Calculations
+
+These are the coefficients for the first model:
+
+```{r models, echo = FALSE}
+# Linear models
+model2 <- lm(data = mtcars, mpg ~ wt + qsec)
+model1 <- lm(data = mtcars, mpg ~ wt)
+
+model1$coef
+```
+
+And these, the ones related to the second one:
+
+```{r model2, echo = FALSE, fig.height=4, fig.width=10}
+model2$coef
+
+qsInput <- 18.7
+```
+
+## Exemple
+
+Selecting at the app the value **`r qsInput`**, these are the plots that you could see:
+
+```{r plots, echo = FALSE, fig.height=4, fig.width=10}
+
+
+
+# This prediction gives two points on the model plane, which allows us to calculate the new line
+model2Pred <- predict(object = model2,
+                      newdata = data.frame(wt = c(0, 6),
+                                           qsec = c(qsInput, qsInput)))
+
+# New intersection
+a <- model2Pred[1]
+
+# New slope
+b <- (model2Pred[2] - model2Pred[1]) / 6
+
+# Paint 2 plots
+par(mfrow=c(1,2))
+
+# Plots mtcars points (wt, mpg)
+plot(x = mtcars$wt, y = mtcars$mpg, xlab="weight", ylab="miles per galon", main="Comparing models")
+
+# Plots model line mpg ~ wt
+abline(model1, col = "darkred", lwd = 2)
+
+# Plots new model line: mpg ~ wt + qsec, with a fixed value of qsec
+abline(a = a, b = b, col = "seagreen", lwd = 2)
+
+# Plots mtcars points (qsec, mpg)
+plot(x = mtcars$qsec, y = mtcars$mpg, xlab="sec per 1/4 mile", ylab="miles per galon", main="Selected qsec")
+
+# Plots the line related to the selected value of qsec
+abline(v = qsInput, col = "seagreen", lwd = 2)
+
+```
+
+## Summary
+
+The app allows you to compare the two proposed models by adjusting the value of the parameter qsec.
+
+You can run the application at https://arielselles.shinyapps.io/lmoncars/.
+
+You can found the code of the application at https://github.com/arielselles/coursera-creating-apps.

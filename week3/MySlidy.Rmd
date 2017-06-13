@@ -1,0 +1,49 @@
+---
+title: "My Slidified Presentation"
+author: "Ariel Selles"
+date: "June 13th, 2017"
+output: 
+  slidy_presentation: 
+    css: slidy.css
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Growth of Orange Trees
+
+### About the slides
+
+This slides show the growth of orange trees stored at the **Orange dataset**.
+
+### The dataset
+
+Mainly, the dataset stores *age* and *circumference* from **5 orange trees**, labeled *from 1 to 5*. 
+
+The *age* is saved in *days* since December 31th of 1968, and the *circumference* in *millimeters*.
+
+You can obtain more details by typing *?Orange* at your R console
+
+***
+
+```{r plotly}
+suppressPackageStartupMessages(library(plotly))
+
+plot_ly(data = Orange, 
+        x = ~age, 
+        y = ~circumference, 
+        mode = "markers", 
+        color = ~Tree, 
+        type="scatter") %>%
+    
+    add_trace(x = ~age, 
+        y = ~circumference, 
+        mode = "lines", 
+        color = ~Tree)
+```
+
+## Summary
+
+At a first sight, it seems like all trees grow more or less the same along the whole period.
+

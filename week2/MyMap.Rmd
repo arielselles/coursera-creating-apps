@@ -1,0 +1,24 @@
+---
+title: "Some Best Western Hotels"
+author: "Ariel Selles"
+date: "June 13th, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+Following, it is shown some Best Western Hotels, spread throughout the World.
+
+```{r dataset}
+library(leaflet)
+
+ds <- read.csv("BWHotels.csv")
+# head(ds)
+
+my_map <- leaflet() %>% addTiles()
+my_map <- my_map %>% addMarkers(lat = ds$lat, lng = ds$long, popup=ds$name, clusterOptions = markerClusterOptions())
+my_map
+
+```
